@@ -1,37 +1,37 @@
 @base_url = http://localhost:3000
 
 //inscription
+
 POST {{base_url}}/api/auth/local/register
 Content-Type: application/json
 
 {
-  "email": "nat7301@hotmail.fr",
+  "email": "narjhdsdsert7301@hdsdsosddsdtmail.fr",
   "username": "Naat",
   "password":"PasAdmin12"
 }
 
-###
-//connexion
+### connexion
 POST {{base_url}}/api/auth/local
 Content-Type: application/json
 
 {
-  "identifier": "nat7301@hotmail.fr",
-  "password": "PasAdmin123"
+  "identifier": "narjhdsdsert7301@hdsdsosddsdtmail.fr",
+  "password": "PasAdmin12"
 }
 
 ###
-POST {{base_url}}/api/auth/logout
-Authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAxNzczNTg3LCJleHAiOjE3MDQzNjU1ODd9._93jmG_92VMHMsBxxSZG-F_-sMJo922SrY64Dw6Q2cY
+POST {{base_url}}/api/auth/local/logout
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODM5MywiZXhwIjoxNzAxODgxOTkzfQ.WL35uQ3y8-MOZJVYV0s4oYL2ZpHbXztxfkBxHj6WFx8
 Content-Type: application/json
 ###
 
 GET {{base_url}}/api/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNzAxNzczNTg3LCJleHAiOjE3MDQzNjU1ODd9._93jmG_92VMHMsBxxSZG-F_-sMJo922SrY64Dw6Q2cY
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODM5MywiZXhwIjoxNzAxODgxOTkzfQ.WL35uQ3y8-MOZJVYV0s4oYL2ZpHbXztxfkBxHj6WFx8
 
 ###
 POST {{base_url}}/api/auth/change-password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzgwOTc1LCJleHAiOjE3MDQzNzI5NzV9.0t8Co9_E8GmATpQvpDvnYTOSB77VgDYTO5oCu1fK-7U
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 Content-Type: application/json
 
 {
@@ -69,9 +69,9 @@ Content-Type: application/json
 }
 ###
 
-POST {{base_url}}/api/official-games
+POST {{base_url}}/api/officialGames
 Content-Type: application/json                                         
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 
 {
 "data": {
@@ -82,16 +82,16 @@ Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9
 }
 }
 ###
-GET {{base_url}}/api/official-games
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+GET {{base_url}}/api/officialGames
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 ###
-GET {{base_url}}/api/official-games/1
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+GET {{base_url}}/api/officialGames/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 ###
 
-PUT {{base_url}}/api/official-games/1
+PUT {{base_url}}/api/officialGames/1
 Content-Type: application/json
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 
 {
     "data": {
@@ -102,12 +102,12 @@ Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9
 }
 }
 ###
-DELETE {{base_url}}/api/official-games/1
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+DELETE {{base_url}}/api/officialGames/1
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 
 ###
 //
-POST {{base_url}}/api/official-games
+POST {{base_url}}/api/officialGames
 Content-Type: application/json                                         
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
 
@@ -120,16 +120,16 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxN
 }
 }
 ###
-GET {{base_url}}/api/official-games
+GET {{base_url}}/api/officialGames
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
 ###
-GET {{base_url}}/api/official-games/1
+GET {{base_url}}/api/officialGames/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
 ###
 
-PUT {{base_url}}/api/official-games/1
+PUT {{base_url}}/api/officialGames/1
 Content-Type: application/json
-Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9b4a5230e62a894f2ee1cd38f1fa00ae2790994f0cbce110fb856f223b4b717f02b297155fc495a273062aafa7242f79a336d37ac4a635562844b4abd7dd7d43f4ee25b2b98c837af179bc5f2dd3de03059a92e41b2244b4ef7f41a8488745ac4b1287d
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
 
 {
     "data": {
@@ -140,6 +140,6 @@ Authorization: Bearer 76b0beeee596944c289e33690783343e24607f6d4cb056d636e5d62ca9
 }
 }
 ###
-DELETE {{base_url}}/api/official-games/1
+DELETE {{base_url}}/api/officialGames/1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
 
