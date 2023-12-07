@@ -1,11 +1,11 @@
-import { DataTypes, Model, Sequelize } from "sequelize"
+import { DataTypes, Sequelize } from "sequelize"
 
 const sequelize = new Sequelize({
   dialect: "sqlite",
   storage: "./db.sqlite",
 })
 
-const freeGame = sequelize.define('freeGame', {
+const FreeGame = sequelize.define('freeGame', {
   id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -24,7 +24,7 @@ const freeGame = sequelize.define('freeGame', {
   timestamps: false,
 });
 
-const officialGame = sequelize.define('officialGame', {
+const OfficialGame = sequelize.define('officialGame', {
   id: {
       type: DataTypes.INTEGER,
       primaryKey: true,
@@ -63,8 +63,8 @@ const User = sequelize.define('User', {
   timestamps: false,
 });
 
-const blackList = sequelize.define('BlackList', {
-  JwtToken: {
+const BlackList = sequelize.define('BlackList', {
+  jwtToken: {
       type: DataTypes.STRING,
   },
 }
@@ -75,4 +75,4 @@ const blackList = sequelize.define('BlackList', {
 sequelize
   //.sync({ force: true })
   .sync()
-  export { sequelize, freeGame, officialGame, User,blackList };
+  export { sequelize, FreeGame, OfficialGame, User,BlackList };

@@ -1,27 +1,28 @@
 import express, { Request, Response } from 'express';
-import { sequelize, freeGame, officialGame, User, blackList } from './sequelize';
+import { sequelize, FreeGame, OfficialGame, User, BlackList } from './sequelize';
 import authenticationMiddleware from './middleware_jws'
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import { v4 as uuidv4 } from 'uuid';
 
 const app = express();
 const port = 3000;
 const saltRounds = 10;
-const token = 
 app.use(bodyParser.json());
 app.use(cors());
 
-const jwtToken = jwt.sign({ iat: Math.floor(Date.now() / 1000)}, 'secret', { expiresIn: '1h' });
-const jwtToken2 = jwt.sign({ iat: Math.floor(Date.now() / 1000)} , 'secret', { expiresIn: '1h' });
-console.log('tokens', jwtToken, jwtToken2)
+const jwtToken = jwt.sign({uuid:uuidv4()}, 'secret', { expiresIn: '1h' });
+const jwtToken2 = jwt.sign({uuid:uuidv4()} , 'secret', { expiresIn: '1h' });
+console.log('tokens', jwtToken)
+console.log('tokens 2', jwtToken2)
 
 
 app.post('/api/freeGames', async (req: Request, res: Response) => {
   try {
     const { name, description, image } = req.body;
-    const newFreeGame = await freeGame.create({ name, description, image });
+    const newFreeGame = await FreeGame.create({ name, description, image });
     res.json(newFreeGame);
   } catch (error) {
     console.error('Erreur lors de la création d\'un jeu gratuit :', error);
@@ -31,7 +32,7 @@ app.post('/api/freeGames', async (req: Request, res: Response) => {
 
 app.get('/api/freeGames', async (req: Request, res: Response) => {
   try {
-    const freeGames = await freeGame.findAll();
+    const freeGames = await FreeGame.findAll();
     res.json(freeGames);
   } catch (error) {
     console.error('Erreur lors de la récupération des jeux gratuits :', error);
@@ -42,7 +43,7 @@ app.get('/api/freeGames', async (req: Request, res: Response) => {
 app.get('/api/freeGames/:id', async (req: Request, res: Response) => {
   try {
     const gameId = req.params.id;
-    const freeGameById = await freeGame.findByPk(gameId);
+    const freeGameById = await FreeGame.findByPk(gameId);
     res.json(freeGameById);
   } catch (error) {
     console.error('Erreur lors de la récupération du jeu gratuit par ID :', error);
@@ -54,8 +55,8 @@ app.put('api/freegames/:id', async (req, res) => {
   try {
     const { name, description, image } = req.body;
     const gameId = req.params.id;
-    const freeGameById = await freeGame.findByPk(gameId);
-    await freeGame.update(
+    const freeGameById = await FreeGame.findByPk(gameId);
+    await FreeGame.update(
       { name, description, image }, {
       where: { id: freeGameById }
     })
@@ -69,8 +70,8 @@ app.put('api/freegames/:id', async (req, res) => {
 app.delete('api/freegames/:id', async (req, res) => {
   try {
     const gameId = req.params.id;
-    const freeGameById = await freeGame.findByPk(gameId);
-    await freeGame.destroy({
+    const freeGameById = await FreeGame.findByPk(gameId);
+    await FreeGame.destroy({
       where: { id: freeGameById }
     })
     res.status(200).json({ message: 'Le jeu gratuit a été supprimé' });
@@ -84,7 +85,7 @@ app.delete('api/freegames/:id', async (req, res) => {
 app.post('/api/officialgames', authenticationMiddleware, async (req: Request, res: Response) => {
   try {
     const { name, description, image } = req.body;
-    const newFreeGame = await officialGame.create({ name, description, image });
+    const newFreeGame = await OfficialGame.create({ name, description, image });
     res.json(newFreeGame);
   } catch (error) {
     console.error('Erreur lors de la création d\'un jeu gratuit :', error);
@@ -95,7 +96,7 @@ app.post('/api/officialgames', authenticationMiddleware, async (req: Request, re
 // @ts-ignore
 app.get('/api/officialgames', authenticationMiddleware, async (req: Request, res: Response) => {
   try {
-    const freeGames = await officialGame.findAll();
+    const freeGames = await OfficialGame.findAll();
     res.json(freeGames);
   } catch (error) {
     console.error('Erreur lors de la récupération des jeux gratuits :', error);
@@ -107,7 +108,7 @@ app.get('/api/officialgames', authenticationMiddleware, async (req: Request, res
 app.get('/api/officialgames/:id', authenticationMiddleware, async (req: Request, res: Response) => {
   try {
     const gameId = req.params.id;
-    const freeGameById = await officialGame.findByPk(gameId);
+    const freeGameById = await OfficialGame.findByPk(gameId);
     res.json(freeGameById);
   } catch (error) {
     console.error('Erreur lors de la récupération du jeu gratuit par ID :', error);
@@ -120,8 +121,8 @@ app.put('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
   try {
     const { name, description, image } = req.body;
     const gameId = req.params.id;
-    const officialGameById = await officialGame.findByPk(gameId);
-    await officialGame.update(
+    const officialGameById = await OfficialGame.findByPk(gameId);
+    await OfficialGame.update(
       { name, description, image }, {
       where: { id: officialGameById }
     })
@@ -136,8 +137,8 @@ app.put('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
 app.delete('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
   try {
     const gameId = req.params.id;
-    const officialGameById = await officialGame.findByPk(gameId);
-    await officialGame.destroy({
+    const officialGameById = await OfficialGame.findByPk(gameId);
+    await OfficialGame.destroy({
       where: { id: officialGameById }
     })
     res.status(200).json({ error: 'Le jeu gratuit a été supprimé' });
@@ -180,7 +181,7 @@ app.post('/api/auth/local', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Identifiants invalides' });
     }
     //@ts-ignore
-    const jwtToken = jwt.sign({ userId: user.id }, 'secret', { expiresIn: '1h' });
+    const jwtToken = jwt.sign({ iat: Math.floor(Date.now() / 1000),uuid:uuidv4()},{ userId: user.id }, 'secret', { expiresIn: '1h' });
     res.status(200).json({ message: 'Connexion réussie', jwtToken });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);
@@ -197,7 +198,7 @@ app.post('/api/auth/local/logout', authenticationMiddleware, async (req, res) =>
       return res.status(400).json({ error: 'Token not found. Unable to blacklist.' });
     }
 
-    await blackList.create({ JwtToken: tokenToBlacklist });
+    await BlackList.create({ JwtToken: tokenToBlacklist });
 
     res.status(200).json({ error: 'Logout successful' });
   } catch (error) {
