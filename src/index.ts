@@ -13,13 +13,7 @@ const saltRounds = 10;
 app.use(bodyParser.json());
 app.use(cors());
 
-const jwtToken = jwt.sign({uuid:uuidv4()}, 'secret', { expiresIn: '1h' });
-const jwtToken2 = jwt.sign({uuid:uuidv4()} , 'secret', { expiresIn: '1h' });
-console.log('tokens', jwtToken)
-console.log('tokens 2', jwtToken2)
-
-
-app.post('/api/freeGames', async (req: Request, res: Response) => {
+app.post('/api/freegames', async (req: Request, res: Response) => {
   try {
     const { name, description, image } = req.body;
     const newFreeGame = await FreeGame.create({ name, description, image });
@@ -30,7 +24,7 @@ app.post('/api/freeGames', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/freeGames', async (req: Request, res: Response) => {
+app.get('/api/freegames', async (req: Request, res: Response) => {
   try {
     const freeGames = await FreeGame.findAll();
     res.json(freeGames);
@@ -40,7 +34,7 @@ app.get('/api/freeGames', async (req: Request, res: Response) => {
   }
 });
 
-app.get('/api/freeGames/:id', async (req: Request, res: Response) => {
+app.get('/api/freegames/:id', async (req: Request, res: Response) => {
   try {
     const gameId = req.params.id;
     const freeGameById = await FreeGame.findByPk(gameId);
@@ -51,29 +45,31 @@ app.get('/api/freeGames/:id', async (req: Request, res: Response) => {
   }
 });
 
-app.put('api/freegames/:id', async (req, res) => {
+app.put('/api/freegames/:id', async (req, res) => {
   try {
     const { name, description, image } = req.body;
     const gameId = req.params.id;
     const freeGameById = await FreeGame.findByPk(gameId);
-    await FreeGame.update(
-      { name, description, image }, {
-      where: { id: freeGameById }
-    })
-    res.status(200).json({ message: 'Le jeu gratuit a été modifié' });
+    if(freeGameById){
+      await freeGameById.update({ name, description, image })
+      res.status(200).json({ message: 'Le jeu gratuit a été modifié' });
+    }
+    else {
+
+    }
   } catch (error) {
     console.error('Erreur lors de la modification du jeu gratuit par ID :', error);
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 })
 
-app.delete('api/freegames/:id', async (req, res) => {
+app.delete('/api/freegames/:id', async (req, res) => {
   try {
     const gameId = req.params.id;
     const freeGameById = await FreeGame.findByPk(gameId);
-    await FreeGame.destroy({
-      where: { id: freeGameById }
-    })
+    if (freeGameById) {
+      await freeGameById.destroy()
+    }
     res.status(200).json({ message: 'Le jeu gratuit a été supprimé' });
   } catch (error) {
     console.error('Erreur lors de la suppression du jeu gratuit par ID :', error);
@@ -84,8 +80,8 @@ app.delete('api/freegames/:id', async (req, res) => {
 // @ts-ignore
 app.post('/api/officialgames', authenticationMiddleware, async (req: Request, res: Response) => {
   try {
-    const { name, description, image } = req.body;
-    const newFreeGame = await OfficialGame.create({ name, description, image });
+    const { name, description, image,prix } = req.body.data;
+    const newFreeGame = await OfficialGame.create({ name, description, image, prix });
     res.json(newFreeGame);
   } catch (error) {
     console.error('Erreur lors de la création d\'un jeu gratuit :', error);
@@ -117,7 +113,7 @@ app.get('/api/officialgames/:id', authenticationMiddleware, async (req: Request,
 });
 
 // @ts-ignore
-app.put('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
+app.put('/api/officialgames/:id', authenticationMiddleware, async (req, res) => {
   try {
     const { name, description, image } = req.body;
     const gameId = req.params.id;
@@ -134,7 +130,7 @@ app.put('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
 })
 
 // @ts-ignore
-app.delete('api/officialgames/:id', authenticationMiddleware, async (req, res) => {
+app.delete('/api/officialgames/:id', authenticationMiddleware, async (req, res) => {
   try {
     const gameId = req.params.id;
     const officialGameById = await OfficialGame.findByPk(gameId);
@@ -181,8 +177,8 @@ app.post('/api/auth/local', async (req: Request, res: Response) => {
       return res.status(401).json({ error: 'Identifiants invalides' });
     }
     //@ts-ignore
-    const jwtToken = jwt.sign({ iat: Math.floor(Date.now() / 1000),uuid:uuidv4()},{ userId: user.id }, 'secret', { expiresIn: '1h' });
-    res.status(200).json({ message: 'Connexion réussie', jwtToken });
+    const jwtToken = jwt.sign({uuid: uuidv4(), userId: user.id },'secret',{ expiresIn: '1h' });
+        res.status(200).json({ message: 'Connexion réussie', jwtToken });
   } catch (error) {
     console.error('Erreur lors de la connexion :', error);
     res.status(500).json({ message: 'Erreur interne du serveur', error: error });
@@ -193,13 +189,21 @@ app.post('/api/auth/local', async (req: Request, res: Response) => {
 app.post('/api/auth/local/logout', authenticationMiddleware, async (req, res) => {
   try {
     const tokenToBlacklist = req.headers.authorization;
+    if (!tokenToBlacklist) {
+      return res.status(401).json({ error: 'Token manquant. Authentification requise.' });
+    }
+    const [bearer, token] = tokenToBlacklist.split(' ');
 
+    if (bearer !== 'Bearer' || !token) {
+      return res.status(401).json({ error: 'Format de token incorrect. Authentification requise.' });
+    }
     if (!tokenToBlacklist) {
       return res.status(400).json({ error: 'Token not found. Unable to blacklist.' });
     }
-
-    await BlackList.create({ JwtToken: tokenToBlacklist });
-
+    if (bearer !== 'Bearer' || !token) {
+      return res.status(401).json({ error: 'Format de token incorrect. Authentification requise.' });
+    }
+    await BlackList.create({ JwtToken: token });
     res.status(200).json({ error: 'Logout successful' });
   } catch (error) {
     console.error('Error during logout:', error);
@@ -207,28 +211,8 @@ app.post('/api/auth/local/logout', authenticationMiddleware, async (req, res) =>
   }
 });
 
-app.get('/api/user/:id', async (req: Request, res: Response) => {
-  try {
-    const userId = req.body.id;
-
-    if (!userId || isNaN(parseInt(userId))) {
-      return res.status(400).json({ error: 'ID d\'utilisateur invalide.' });
-    }
-
-    const userByID = await User.findByPk(userId);
-
-    if (!userByID) {
-      return res.status(404).json({ error: 'Utilisateur non trouvé.' });
-    }
-
-    res.json({
-      id: userByID.get('id'),
-      email: userByID.get('email'),
-    });
-  } catch (error) {
-    console.error('Erreur lors de la récupération de l\'utilisateur par ID :', error);
-    res.status(500).json({ error: 'Erreur interne du serveur' });
-  }
+app.get('/api/users/me',authenticationMiddleware, async (req: Request, res: Response) => {
+  res.json(req.user);
 });
 
 //@ts-ignore
@@ -261,7 +245,13 @@ app.put('/api/user/password', authenticationMiddleware, async (req: Request, res
     res.status(500).json({ error: 'Erreur interne du serveur' });
   }
 });
-
+//@ts-ignore
+app.get('/api/user/me', authenticationMiddleware, (req, res) => {
+  const userInfo = {
+    id: req.body.id,
+  };
+  res.status(200).json(userInfo);
+});
 
 sequelize
   .sync()

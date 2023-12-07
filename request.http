@@ -1,4 +1,7 @@
 @base_url = http://localhost:3000
+//
+@token= eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1dWlkIjoiMTVjNDk4NjYtMjg5Zi00Y2ZlLTkzM2QtYWY5YzI5ODczYmU3IiwidXNlcklkIjoxLCJpYXQiOjE3MDE5NjI4MjcsImV4cCI6MTcwMTk2NjQyN30.pE7bG3Jv1aDstXGrW_0l0GMXcOob1E3miUExuvlTghY
+
 
 //inscription
 
@@ -6,8 +9,8 @@ POST {{base_url}}/api/auth/local/register
 Content-Type: application/json
 
 {
-  "email": "narjhdsdsert7301@hdsdsosddsdtmail.fr",
-  "username": "Naat",
+  "email": "nat7303@hotmail.fr",
+  "username": "Nat",
   "password":"PasAdmin12"
 }
 
@@ -16,22 +19,22 @@ POST {{base_url}}/api/auth/local
 Content-Type: application/json
 
 {
-  "identifier": "narjhdsdsert7301@hdsdsosddsdtmail.fr",
+  "identifier": "nat7303@hotmail.fr",
   "password": "PasAdmin12"
 }
 
 ###
 POST {{base_url}}/api/auth/local/logout
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODM5MywiZXhwIjoxNzAxODgxOTkzfQ.WL35uQ3y8-MOZJVYV0s4oYL2ZpHbXztxfkBxHj6WFx8
+Authorization: Bearer {{token}}
 Content-Type: application/json
 ###
 
 GET {{base_url}}/api/users/me
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODM5MywiZXhwIjoxNzAxODgxOTkzfQ.WL35uQ3y8-MOZJVYV0s4oYL2ZpHbXztxfkBxHj6WFx8
+Authorization: Bearer {{token}}
 
 ###
 POST {{base_url}}/api/auth/change-password
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 Content-Type: application/json
 
 {
@@ -41,7 +44,7 @@ Content-Type: application/json
 }
 
 ###
-POST {{base_url}}/api/freeGames
+POST {{base_url}}/api/freegames
 Content-Type: application/json
 
 {
@@ -52,50 +55,51 @@ Content-Type: application/json
 
 
 ###
-GET {{base_url}}/api/freeGames
+GET {{base_url}}/api/freegames
 ###
-GET {{base_url}}/api/freeGames/5
+GET {{base_url}}/api/freegames/5
 ###
 
-PUT {{base_url}}/api/freeGames/5
+PUT {{base_url}}/api/freegames/1
 Content-Type: application/json
 
 {
     "data": {
-    "nom": "tata",
+    "name": "tata",
     "description": "zsdcfvg",
     "image": "C:/Users/nat73/Pictures/Screenshots/A.png"
 }
+
 }
 ###
 
 POST {{base_url}}/api/officialGames
 Content-Type: application/json                                         
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 
 {
 "data": {
-  "Nom": "Patate_Premium",
-  "Description": "dfvfddfrd",
-  "Image": "zzsdcfvfd",
+  "name": "Patate_Premium",
+  "description": "dfvfddfrd",
+  "image": "zzsdcfvfd",
   "prix": 19.99
 }
 }
 ###
 GET {{base_url}}/api/officialGames
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 ###
 GET {{base_url}}/api/officialGames/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 ###
 
-PUT {{base_url}}/api/officialGames/1
+PUT {{base_url}}/api/officialgames/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 
 {
     "data": {
-    "nom": "tata",
+    "name": "tata",
     "description": "zsdcfvg",
     "image": "C:/Users/nat73/Pictures/Screenshots/A.png",
     "Prix": 16.12
@@ -103,43 +107,28 @@ Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhd
 }
 ###
 DELETE {{base_url}}/api/officialGames/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 
 ###
-//
-POST {{base_url}}/api/officialGames
-Content-Type: application/json                                         
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
+DELETE {{base_url}}/api/freegames/2
 
-{
-"data": {
-  "Nom": "Patate_Premium",
-  "Description": "dfvfddfrd",
-  "Image": "zzsdcfvfd",
-  "prix": 19.99
-}
-}
 ###
 GET {{base_url}}/api/officialGames
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
+Authorization: Bearer {{token}}
 ###
 GET {{base_url}}/api/officialGames/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
+Authorization: Bearer {{token}}
 ###
 
 PUT {{base_url}}/api/officialGames/1
 Content-Type: application/json
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImlhdCI6MTcwMTg3ODQ1NywiZXhwIjoxNzAxODgyMDU3fQ.IZSaEpzD1hdX6Flp85AOoIWmNFMq9HeTsUASnH2lmCw
+Authorization: Bearer {{token}}
 
 {
     "data": {
-    "nom": "tata",
+    "name": "tata",
     "description": "zsdcfvg",
     "image": "C:/Users/nat73/Pictures/Screenshots/A.png",
     "Prix": 16.12
 }
 }
-###
-DELETE {{base_url}}/api/officialGames/1
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNzAxNzg1ODY0LCJleHAiOjE3MDQzNzc4NjR9.IXBb-YiSAGM-xXipF7WPjdQUXTrvuOCfUoE3UI8ZYyc
-

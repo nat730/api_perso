@@ -1,11 +1,12 @@
 import jwt from 'jsonwebtoken';
 import { BlackList } from './sequelize';
+import { NextFunction, Request, Response } from 'express';
 
 
 const authenticationMiddleware = async (
-  req: { headers: { authorization: string }; user: any },
-  res: { status: (code: number) => { json: (data: { error: string }) => void } },
-  next: () => void
+  req: Request,
+  res: Response,
+  next: NextFunction
 ) => {
   const authorizationHeader = req.headers.authorization;
 
@@ -22,7 +23,8 @@ const authenticationMiddleware = async (
   try {
     const decoded = jwt.verify(token, 'secret');
     const isBlacklisted = await BlackList.findOne({ where: { jwtToken: token } })
-    if (isBlacklisted) {
+    if (!isBlacklisted) {
+      //@ts-ignore
       req.user = decoded;
       next();
     } else {
