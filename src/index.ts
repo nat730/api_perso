@@ -146,18 +146,20 @@ app.delete('/api/officialgames/:id', authenticationMiddleware, async (req, res) 
 
 app.post('/api/auth/local/register', async (req: Request, res: Response) => {
   try {
-    const { email, password } = req.body;
-    const existingUser = await User.findOne({ where: { email } });
+    const { email, password,username } = req.body;
+    const existingUser = await User.findOne({ where: { email } && {username} });
     if (existingUser) {
       return res.status(409).json({ error: 'Cet utilisateur existe déjà' });
     }
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const newUser = await User.create({
       email,
+      username,
       password: hashedPassword,
     });
     const result = newUser.dataValues
     delete result.password
+    res.status(200)
   } catch (error) {
     console.error('Erreur lors de l\'inscription :', error);
     res.status(500).json({ error: 'Erreur interne du serveur' });
@@ -167,7 +169,7 @@ app.post('/api/auth/local/register', async (req: Request, res: Response) => {
 app.post('/api/auth/local', async (req: Request, res: Response) => {
   try {
     const { identifier, password } = req.body;
-    const user = await User.findOne({ where: { email: identifier } });
+    const user = await User.findOne({ where: { username: identifier } });
     if (!user) {
       return res.status(401).json({ error: 'Identifiants invalides' });
     }
@@ -186,33 +188,36 @@ app.post('/api/auth/local', async (req: Request, res: Response) => {
 });
 
 //@ts-ignore
-app.post('/api/auth/local/logout', authenticationMiddleware, async (req, res) => {
+app.post('/api/auth/local/logout', async (req, res) => {
   try {
     const tokenToBlacklist = req.headers.authorization;
-    if (!tokenToBlacklist) {
-      return res.status(401).json({ error: 'Token manquant. Authentification requise.' });
-    }
-    const [bearer, token] = tokenToBlacklist.split(' ');
 
-    if (bearer !== 'Bearer' || !token) {
-      return res.status(401).json({ error: 'Format de token incorrect. Authentification requise.' });
-    }
     if (!tokenToBlacklist) {
-      return res.status(400).json({ error: 'Token not found. Unable to blacklist.' });
+      return res.status(401).json({ error: 'Token missing. Authentication required.' });
     }
+
+    const [bearer, token] = tokenToBlacklist.split(' ');
+      console.log("test", token);
+    
     if (bearer !== 'Bearer' || !token) {
-      return res.status(401).json({ error: 'Format de token incorrect. Authentification requise.' });
+      return res.status(401).json({ error: 'Incorrect token format. Authentication required.' });
     }
-    await BlackList.create({ JwtToken: token });
-    res.status(200).json({ error: 'Logout successful' });
+
+    await BlackList.create({ jwtToken: token });
+    const latestBlacklistedToken = await BlackList.findOne({
+      order: [['createdAt', 'DESC']],
+    });
+//@ts-ignore
+    res.status(200).json({ message: 'Blacklist updated', latestToken: latestBlacklistedToken!.jwtToken });
   } catch (error) {
     console.error('Error during logout:', error);
     res.status(500).json({ error: 'Internal server error' });
   }
 });
 
+
 app.get('/api/users/me',authenticationMiddleware, async (req: Request, res: Response) => {
-  res.json(req.user);
+  res.status(200).json(req.user);
 });
 
 //@ts-ignore
